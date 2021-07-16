@@ -63,6 +63,32 @@ export default function Home() {
     .then(function(respostaCompleta) {
       setSeguidores(respostaCompleta);
     })
+
+    //API GraphQL
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        'Authorization': '62077c2fd46999f8bb6dfb3966477b',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ "query": `query {
+        allCommunities {
+          id
+          title
+          imageUrl
+          creatorSlug
+        }
+      }` })
+    })
+    .then((response) => response.json())
+
+    .then((respostaCompleta) => {
+      const comunidadesDato = respostaCompleta.data.allCommunities
+
+      setComunidades(comunidadesDato)
+    })
+
   }, [])
 
   return (
@@ -121,6 +147,9 @@ export default function Home() {
           </Box>
         </div>
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
+
+          <ProfileRelationsBox title="Seguidores" items={seguidores} />
+
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Meus Amigos ({myFriends.length})
@@ -139,8 +168,6 @@ export default function Home() {
             </ul>
           </ProfileRelationsBoxWrapper>
 
-          <ProfileRelationsBox title="Seguidores GitHub" items={seguidores} />
-
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Comunidades ({comunidades.length})
@@ -149,8 +176,8 @@ export default function Home() {
               {comunidades.map((comunidades) => {
                 return(
                   <li key={comunidades.id}>
-                    <a href={`/users/${comunidades.title}`}>
-                      <img src={comunidades.image} />
+                    <a href={`/comunities/${comunidades.id}`}>
+                      <img src={comunidades.imageUrl} />
                       <span>{comunidades.title}</span>
                     </a>
                   </li>

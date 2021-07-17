@@ -25,7 +25,7 @@ export default function LoginScreen() {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ githubUser: 'wagaofc' })
+                    body: JSON.stringify({ githubUser: githubUser })
                 })
                 .then(async (respostaDoServer) => {
                     const dadosDaResposta = await respostaDoServer.json()
@@ -47,7 +47,7 @@ export default function LoginScreen() {
                     setGithubUser(evento.target.value)
                 }}
             />
-            {githubUser.length === 0 ? 'Insira o usuário!' : ''}
+            {/* {githubUser.length === 0 ? 'Insira o usuário!' : ''} */}
             <button type="submit">
               Login
           </button>
